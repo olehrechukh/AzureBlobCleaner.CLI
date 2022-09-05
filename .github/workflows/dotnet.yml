@@ -34,6 +34,6 @@ jobs:
       - name: Print new build number
         run: echo "Build number is $BUILD_NUMBER"
       - name: Pack with dotnet
-        run: dotnet pack src -o nuget-packages  -p:PackageVersion=$MAJOR.$MINOR.${{ steps.buildnumber.outputs.build_number }} -c Release
+        run: dotnet pack src -o nuget-packages  -p:PackageVersion=${{ env.MAJOR}}.${{ env.MINOR }}.${{ steps.buildnumber.outputs.build_number }} -c Release
       - name: Push with dotnet
-        run: dotnet nuget push nuget-packages/BlobCleaner.$MAJOR.$MINOR.${{ steps.buildnumber.outputs.build_number }} --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push nuget-packages/BlobCleaner.${{ env.MAJOR}}.${{ env.MINOR }}.${{ steps.buildnumber.outputs.build_number }}.nupkg --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
