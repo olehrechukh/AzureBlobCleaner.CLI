@@ -32,5 +32,5 @@ jobs:
         run: echo "Build number is $BUILD_NUMBER"
       - name: Pack with dotnet
         run: dotnet pack src -o nuget-packages  -p:PackageVersion=1.1.${{ steps.buildnumber.outputs.build_number }} -c Release
-#      - name: Push with dotnet
-#        run: dotnet nuget push nuget-packages/BlobCleaner.1.0.0.nupkg --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
+      - name: Push with dotnet
+        run: dotnet nuget push nuget-packages/BlobCleaner.1.0.0.${{ steps.buildnumber.outputs.build_number }} --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
