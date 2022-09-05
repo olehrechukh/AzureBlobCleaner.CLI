@@ -1,0 +1,35 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run azurite in docker
+        run: docker run -d -p 10000:10000 -p 10001:10001 -p 10002:10002 --rm mcr.microsoft.com/azure-storage/azurite
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Test with dotnet
+        run: dotnet test --logger trx
+      - name: Generate build number
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.github_token}}
+      - name: Print new build number
+        run: echo "Build number is $BUILD_NUMBER"
+      - name: Pack with dotnet
+        run: dotnet pack src -0 nuget-packages  -p:PackageVersion=1.1.${{ steps.buildnumber.outputs.build_number }} -c Release
+#      - name: Push with dotnet
+#        run: dotnet nuget push nuget-packages/BlobCleaner.1.0.0.nupkg --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json

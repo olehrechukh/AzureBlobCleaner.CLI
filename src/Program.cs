@@ -18,8 +18,6 @@ app.AddCommand("get", "Get azure blob information",
 
 app.Run();
 
-app.Logger.LogInformation("End app");
-
 async Task ClearBlob(
     CleanBlobCommandHandler cleaner,
     ConsoleAppContext ctx,
@@ -30,5 +28,4 @@ async Task ClearBlob(
     await cleaner.Handle(new CleanBlobCommand(connectionString, force, verbose), ctx.CancellationToken);
 }
 
-app.Logger.LogInformation("End");
 return 1;
