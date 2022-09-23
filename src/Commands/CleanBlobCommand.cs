@@ -3,20 +3,17 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Logging;
 
-namespace BlobCleaner;
+namespace BlobCleaner.Commands;
 
 public record CleanBlobCommand(string ConnectionString, bool Force, bool Verbose);
 
-public class CleanBlobCommandHandler
+internal sealed class CleanBlobCommandHandler
 {
     private readonly ILogger<CleanBlobCommandHandler> logger;
 
     private readonly string[] resultPrefixes = {"simulation", "space-viewer", "optimization", "results"};
 
-    public CleanBlobCommandHandler(ILogger<CleanBlobCommandHandler> logger)
-    {
-        this.logger = logger;
-    }
+    public CleanBlobCommandHandler(ILogger<CleanBlobCommandHandler> logger) => this.logger = logger;
 
     public async Task Handle(CleanBlobCommand command, CancellationToken cancellationToken)
     {

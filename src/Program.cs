@@ -1,4 +1,5 @@
 ﻿using BlobCleaner;
+using BlobCleaner.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -9,10 +10,15 @@ var app = ConsoleApp
         options.ShowDefaultCommand = true;
     })
     .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information))
-    .ConfigureServices((context, services) => services.AddTransient<CleanBlobCommandHandler>())
+    .ConfigureServices((_, services) =>
+    {
+        services.AddTransient<CleanBlobCommandHandler>();
+        services.AddTransient<CleanDbCommandHandler>();
+    })
     .Build();
 
-app.AddCommand("clean", "Clean azure blob", ClearBlob);
+app.AddSubCommand("azure", "clean", "Clean azure blob", ClearBlob);
+app.AddSubCommand("db", "clean", "Clean database", ClearDb);
 app.AddCommand("get", "Get azure blob information",
     (ILogger<ConsoleApp> logger) => { logger.LogInformation("Not yet implemented"); });
 
@@ -26,6 +32,15 @@ async Task ClearBlob(
     [Option("v", "Set output to verbose messages")] bool verbose = false)
 {
     await cleaner.Handle(new CleanBlobCommand(connectionString, force, verbose), ctx.CancellationToken);
+}
+
+async Task ClearDb(
+    CleanDbCommandHandler cleaner,
+    ConsoleAppContext ctx,
+    [Option("c", "Connection string")] string connectionString,
+    [Option("v", "Set output to verbose messages")] bool verbose = false)
+{
+    await cleaner.Handle(new CleanDbCommand(connectionString, verbose), ctx.CancellationToken);
 }
 
 return 1;

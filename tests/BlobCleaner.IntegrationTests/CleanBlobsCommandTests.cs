@@ -40,8 +40,8 @@ public class CleanBlobsCommandTests : TestBase
         count.Should().Be(expectedCount);
     }
 
-    private string[] CreateParams(bool force, bool verbose) => new[]
+    private static string[] CreateParams(bool force, bool verbose) => new[]
     {
-        "clean", "-c", ConnectionString, "-f", force.ToString(), "-v", verbose.ToString()
+        "azure", "clean", "-c", ConnectionString, "-f", force.ToString(), "-v", verbose.ToString()
     };
 }

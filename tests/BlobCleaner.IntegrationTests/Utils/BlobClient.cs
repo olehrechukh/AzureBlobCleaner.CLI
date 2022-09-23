@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using BlobCleaner.Commands;
 
 namespace BlobCleaner.IntegrationTests.Utils;
 

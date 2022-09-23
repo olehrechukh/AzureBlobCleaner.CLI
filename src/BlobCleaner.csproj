@@ -6,14 +6,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>azure-blob</ToolCommandName>
+    <ToolCommandName>slh</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-
+    <PackageVersion>1.0.5</PackageVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="ConsoleAppFramework" Version="4.2.2" />
+    <PackageReference Include="MySql.Data" Version="8.0.30" />
+    <PackageReference Include="Respawn" Version="4.0.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
