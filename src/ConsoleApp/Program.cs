@@ -14,6 +14,16 @@ var blobConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings
 Console.WriteLine(mySqlConnectionString);
 Console.WriteLine(blobConnectionString);
 
+if (string.IsNullOrEmpty(mySqlConnectionString))
+{
+    throw new ArgumentException("Invalid 'ConnectionStrings__MySql'");
+}
+
+if (string.IsNullOrEmpty(blobConnectionString))
+{
+    throw new ArgumentException("Invalid 'ConnectionStrings__AzureBlob'");
+}
+
 await dbCleaner.Handle(new CleanDbCommand(mySqlConnectionString, true), CancellationToken.None);
 await blobCleaner.Handle(new CleanBlobCommand(blobConnectionString, true, true), CancellationToken.None);
 
